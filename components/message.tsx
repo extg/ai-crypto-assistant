@@ -15,6 +15,7 @@ import { MessageActions } from './message-actions';
 import { PreviewAttachment } from './preview-attachment';
 import { Weather } from './weather';
 import equal from 'fast-deep-equal';
+import { StatsWidget } from './stats-widget';
 
 const PurePreviewMessage = ({
   chatId,
@@ -66,7 +67,9 @@ const PurePreviewMessage = ({
 
                   return (
                     <div key={toolCallId}>
-                      {toolName === 'getWeather' ? (
+                      {toolName === 'getStats' ? (
+                        <StatsWidget statsData={result} />
+                      ) : toolName === 'getWeather' ? (
                         <Weather weatherAtLocation={result} />
                       ) : toolName === 'createDocument' ? (
                         <DocumentToolResult

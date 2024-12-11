@@ -35,7 +35,8 @@ type AllowedTools =
   | 'createDocument'
   | 'updateDocument'
   | 'requestSuggestions'
-  | 'getWeather';
+  | 'getWeather'
+  | 'getStats';
 
 const blocksTools: AllowedTools[] = [
   'createDocument',
@@ -45,7 +46,9 @@ const blocksTools: AllowedTools[] = [
 
 const weatherTools: AllowedTools[] = ['getWeather'];
 
-const allTools: AllowedTools[] = [...blocksTools, ...weatherTools];
+const statsTools: AllowedTools[] = ['getStats'];
+
+const allTools: AllowedTools[] = [...blocksTools, ...weatherTools, ...statsTools];
 
 export async function POST(request: Request) {
   const {
@@ -322,6 +325,55 @@ export async function POST(request: Request) {
             id: documentId,
             title: document.title,
             message: 'Suggestions have been added to the document',
+          };
+        },
+      },
+      getStats: {
+        description: 'Get statistics data for different metrics like sales, users, or revenue',
+        parameters: z.object({
+          metric: z.enum(['sales', 'users', 'revenue']),
+          period: z.enum(['day', 'week', 'month']),
+        }),
+        execute: async ({ metric, period }) => {
+          // Эмуляция задержки API
+          await new Promise(resolve => setTimeout(resolve, 1000));
+
+          // Эмуляция данных для разных метрик
+          const mockData = {
+            sales: {
+              day: { value: 142, change: 5.7, unit: '$' },
+              week: { value: 1250, change: -2.3, unit: '$' },
+              month: { value: 4520, change: 12.8, unit: '$' }
+            },
+            users: {
+              day: { value: 24, change: 8.1, unit: '' },
+              week: { value: 158, change: 3.4, unit: '' },
+              month: { value: 652, change: 15.2, unit: '' }
+            },
+            revenue: {
+              day: { value: 2800, change: -1.2, unit: '$' },
+              week: { value: 18500, change: 7.8, unit: '$' },
+              month: { value: 75400, change: 22.5, unit: '$' }
+            }
+          };
+
+          // Получаем данные из мока
+          // @ts-ignore
+          const data = mockData[metric][period];
+
+          // Возвращаем форматированный результат
+          return {
+            title: `${metric.charAt(0).toUpperCase() + metric.slice(1)} (${period})`,
+            value: data.value,
+            change: data.change,
+            unit: data.unit,
+            // Добавляем дополнительные данные для графика
+            chart: {
+              labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+              data: Array.from({ length: 7 }, () => 
+                Math.floor(data.value * (0.7 + Math.random() * 0.6))
+              )
+            }
           };
         },
       },
