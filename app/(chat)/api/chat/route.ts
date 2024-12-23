@@ -28,6 +28,8 @@ import {
 } from '@/lib/utils';
 
 import { generateTitleFromUserMessage } from '../../actions';
+import { getBalance } from './getBalance';
+
 
 export const maxDuration = 60;
 
@@ -36,7 +38,8 @@ type AllowedTools =
   | 'updateDocument'
   | 'requestSuggestions'
   | 'getWeather'
-  | 'getStats';
+  | 'getStats'
+  | 'getBalance';
 
 const blocksTools: AllowedTools[] = [
   'createDocument',
@@ -46,16 +49,19 @@ const blocksTools: AllowedTools[] = [
 
 const weatherTools: AllowedTools[] = ['getWeather'];
 
+const balanceTools: AllowedTools[] = ['getBalance'];
+
 const statsTools: AllowedTools[] = ['getStats'];
 
-const allTools: AllowedTools[] = [...blocksTools, ...weatherTools, ...statsTools];
+const allTools: AllowedTools[] = [...blocksTools, ...weatherTools, ...statsTools, ...balanceTools];
 
 export async function POST(request: Request) {
   const {
     id,
     messages,
     modelId,
-  }: { id: string; messages: Array<Message>; modelId: string } =
+    address,
+  }: { id: string; messages: Array<Message>; modelId: string, address: string } =
     await request.json();
 
   const session = await auth();
@@ -99,6 +105,27 @@ export async function POST(request: Request) {
     maxSteps: 5,
     experimental_activeTools: allTools,
     tools: {
+      getBalance: {
+        description: 'Get balance of a cryptocurrency',
+        parameters: z.object({
+          token: z.string().optional(),
+          address: z.string().optional(),
+          network: z.string().optional(),
+        }),
+        execute: async ({ token, network, address }) => {
+          console.log('========== token =====> ', token, network, address);
+          // Проверяем адрес на валидность
+          if (!address.match(/^0x[a-fA-F0-9]{40}$/)) {
+            throw new Error('Invalid wallet address');
+          }
+
+          const balance = await getBalance(address);
+
+          console.log('========== balance =====> ', balance);
+
+          return { balance, token };
+        },
+      },
       getWeather: {
         description: 'Get the current weather at a location',
         parameters: z.object({
@@ -106,6 +133,7 @@ export async function POST(request: Request) {
           longitude: z.number(),
         }),
         execute: async ({ latitude, longitude }) => {
+          console.log('latitude', latitude, 'longitude', longitude);
           const response = await fetch(
             `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m&hourly=temperature_2m&daily=sunrise,sunset&timezone=auto`,
           );

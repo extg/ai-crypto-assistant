@@ -16,6 +16,7 @@ import { PreviewAttachment } from './preview-attachment';
 import { Weather } from './weather';
 import equal from 'fast-deep-equal';
 import { StatsWidget } from './stats-widget';
+import { CryptoBalance } from './crypto-balance';
 
 const PurePreviewMessage = ({
   chatId,
@@ -78,7 +79,10 @@ const PurePreviewMessage = ({
                           block={block}
                           setBlock={setBlock}
                         />
-                      ) : toolName === 'updateDocument' ? (
+                      ) : toolName === 'getBalance' ? (
+                        <CryptoBalance currency={result.currency} balance={result.balance} />
+                      )
+                      : toolName === 'updateDocument' ? (
                         <DocumentToolResult
                           type="update"
                           result={result}
@@ -107,7 +111,11 @@ const PurePreviewMessage = ({
                   >
                     {toolName === 'getWeather' ? (
                       <Weather />
-                    ) : toolName === 'createDocument' ? (
+                    )
+                    : toolName === 'getBalance' ? (
+                      <CryptoBalance {...args} />
+                    )
+                    : toolName === 'createDocument' ? (
                       <DocumentToolCall
                         type="create"
                         args={args}

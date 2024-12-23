@@ -15,6 +15,7 @@ import { Block, type UIBlock } from './block';
 import { BlockStreamHandler } from './block-stream-handler';
 import { MultimodalInput } from './multimodal-input';
 import { Messages } from './messages';
+import { useAccount } from 'wagmi';
 
 export function Chat({
   id,
@@ -25,6 +26,8 @@ export function Chat({
   initialMessages: Array<Message>;
   selectedModelId: string;
 }) {
+  const { address } = useAccount();
+  
   const { mutate } = useSWRConfig();
 
   const {
@@ -38,7 +41,7 @@ export function Chat({
     stop,
     data: streamingData,
   } = useChat({
-    body: { id, modelId: selectedModelId },
+    body: { id, modelId: selectedModelId, address },
     initialMessages,
     onFinish: () => {
       mutate('/api/history');
