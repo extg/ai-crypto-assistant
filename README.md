@@ -63,7 +63,31 @@ pnpm install
 cp .env.example .env.local
 ```
 
-4. Start the development server:
+4. **Create a PostgreSQL Database named "supa" on macOS:**
+   - Ensure you have PostgreSQL installed. If not, you can install it using Homebrew:
+     ```bash
+     brew install postgresql
+     ```
+   - Start the PostgreSQL service:
+     ```bash
+     brew services start postgresql
+     ```
+   - Create a new database named "supa":
+     ```bash
+     createdb supa
+     ```
+   - Verify the database creation:
+     ```bash
+     psql -l
+     ```
+
+5. Update your `.env.local` file with the database URL:
+```bash
+# Database (Required)
+DATABASE_URL=postgresql://postgres@localhost:5432/supa
+```
+
+6. Start the development server:
 ```bash
 pnpm dev
 ```
@@ -82,7 +106,7 @@ AUTH_SECRET=your-secret-key
 OPENAI_API_KEY=your-openai-key
 
 # Database (Required)
-DATABASE_URL=your-database-url
+DATABASE_URL=postgresql://localhost/supa
 
 # Additional API Keys (Optional)
 ALCHEMY_API_KEY=your-alchemy-key

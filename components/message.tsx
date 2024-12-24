@@ -4,6 +4,7 @@ import type { Message } from 'ai';
 import cx from 'classnames';
 import { motion } from 'framer-motion';
 import { memo, type Dispatch, type SetStateAction } from 'react';
+import equal from 'fast-deep-equal';
 
 import type { Vote } from '@/lib/db/schema';
 
@@ -14,7 +15,6 @@ import { Markdown } from './markdown';
 import { MessageActions } from './message-actions';
 import { PreviewAttachment } from './preview-attachment';
 import { Weather } from './weather';
-import equal from 'fast-deep-equal';
 import { StatsWidget } from './stats-widget';
 import { CryptoBalance } from './crypto-balance';
 
