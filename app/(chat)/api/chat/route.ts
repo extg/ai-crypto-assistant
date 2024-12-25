@@ -28,7 +28,7 @@ import {
 } from '@/lib/utils';
 
 import { generateTitleFromUserMessage } from '../../actions';
-import { getBalance } from './getBalance';
+import { getBalance } from '../../web3-actions/get-balance';
 
 
 export const maxDuration = 60;
@@ -49,19 +49,18 @@ const blocksTools: AllowedTools[] = [
 
 const weatherTools: AllowedTools[] = ['getWeather'];
 
-const balanceTools: AllowedTools[] = ['getBalance'];
+const web3Tools: AllowedTools[] = ['getBalance'];
 
 const statsTools: AllowedTools[] = ['getStats'];
 
-const allTools: AllowedTools[] = [...blocksTools, ...weatherTools, ...statsTools, ...balanceTools];
+const allTools: AllowedTools[] = [...blocksTools, ...weatherTools, ...statsTools, ...web3Tools];
 
 export async function POST(request: Request) {
   const {
     id,
     messages,
     modelId,
-    address,
-  }: { id: string; messages: Array<Message>; modelId: string, address: string } =
+  }: { id: string; messages: Array<Message>; modelId: string } =
     await request.json();
 
   const session = await auth();
@@ -106,14 +105,11 @@ export async function POST(request: Request) {
     experimental_activeTools: allTools,
     tools: {
       getBalance: {
-        description: 'Get balance of a cryptocurrency',
+        description: 'Get balance of a cryptocurrency for given address',
         parameters: z.object({
-          token: z.string().optional(),
-          address: z.string().optional(),
-          network: z.string().optional(),
+          address: z.string(),
         }),
-        execute: async ({ token, network, address }) => {
-          console.log('========== token =====> ', token, network, address);
+        execute: async ({ address }) => {
           // Проверяем адрес на валидность
           if (!address.match(/^0x[a-fA-F0-9]{40}$/)) {
             throw new Error('Invalid wallet address');
@@ -123,7 +119,7 @@ export async function POST(request: Request) {
 
           console.log('========== balance =====> ', balance);
 
-          return { balance, token };
+          return { balance: balance?.toString() };
         },
       },
       getWeather: {
