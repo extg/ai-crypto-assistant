@@ -1,10 +1,9 @@
 <h1 align="center">AI Crypto Assistant</h1>
 
-<p align="center">
-  An advanced AI-powered crypto assistant that helps you manage your digital assets, execute transactions, and stay informed about the crypto market.
-</p>
+An advanced AI-powered crypto assistant that helps you manage your digital assets, execute transactions, and stay informed about the crypto market.
 
 <br/>
+
 
 ## ✨ Features
 
@@ -39,6 +38,7 @@
 - [ ] Real-time price alerts
 - [ ] Portfolio performance tracking
 
+
 ## 🛠 Tech Stack
 
 - [Next.js](https://nextjs.org) with App Router
@@ -49,6 +49,7 @@
 - [shadcn/ui](https://ui.shadcn.com) with Tailwind CSS
 - [Vercel Postgres](https://vercel.com/storage/postgres) for data persistence
 - [NextAuth.js](https://github.com/nextauthjs/next-auth) for authentication
+
 
 ## 🚀 Getting Started
 
@@ -66,19 +67,24 @@ cp .env.example .env.local
 4. **Create a PostgreSQL Database named "supa" on macOS:**
    - Ensure you have PostgreSQL installed. If not, you can install it using Homebrew:
      ```bash
-     brew install postgresql
+     brew install postgresql@15
      ```
    - Start the PostgreSQL service:
      ```bash
-     brew services start postgresql
+     brew services start postgresql@15
      ```
-   - Create a new database named "supa":
+   - Access PostgreSQL:
      ```bash
-     createdb supa
+     psql -U $USER -d postgres
      ```
    - Verify the database creation:
      ```bash
-     psql -l
+     # Once inside the psql interface, create a new database named "supa":
+     CREATE DATABASE supa;
+     # List all databases to verify that "supa" has been created
+     \l 
+     # Exit psql
+     \q
      ```
 
 5. Update your `.env.local` file with the database URL:
@@ -92,7 +98,19 @@ DATABASE_URL=postgresql://postgres@localhost:5432/supa
 pnpm dev
 ```
 
+7. Get your Infura API keys
+
+To interact with the Ethereum blockchain, you'll need to obtain API keys from Infura. Follow these steps:
+
+- Visit [Infura's website](https://infura.io/) and sign up for an account if you don't have one.
+- Add this key to your `.env.local` file:
+
+```bash
+INFURA_API_KEY=your-infura-key
+```
+
 Your AI Crypto Assistant should now be running on [localhost:3000](http://localhost:3000/).
+
 
 ## 🔑 Environment Variables
 
@@ -108,8 +126,7 @@ OPENAI_API_KEY=your-openai-key
 # Database (Required)
 DATABASE_URL=postgresql://localhost/supa
 
-# Additional API Keys (Optional)
-ALCHEMY_API_KEY=your-alchemy-key
+# Infura API Key (Required)
 INFURA_API_KEY=your-infura-key
 ```
 
