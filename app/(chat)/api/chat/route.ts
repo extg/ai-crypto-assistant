@@ -105,7 +105,7 @@ export async function POST(request: Request) {
     experimental_activeTools: allTools,
     tools: {
       getBalance: {
-        description: 'Get balance of a cryptocurrency for given address',
+        description: 'Get balance of a native token POL on Polygon network for given address',
         parameters: z.object({
           address: z.string(),
         }),

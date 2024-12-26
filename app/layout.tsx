@@ -9,8 +9,8 @@ import '@rainbow-me/rainbowkit/styles.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://chat.vercel.ai'),
-  title: 'Next.js Chatbot Template',
-  description: 'Next.js chatbot template using the AI SDK.',
+  title: 'AI Crypto Assistant',
+  description: '',
 };
 
 export const viewport = {
