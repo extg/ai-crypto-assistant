@@ -11,7 +11,7 @@ import { PlusIcon } from './icons';
 import { useSidebar } from './ui/sidebar';
 import { memo } from 'react';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
+// import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 function PureChatHeader({ selectedModelId }: { selectedModelId: string }) {
   const router = useRouter();
@@ -47,14 +47,14 @@ function PureChatHeader({ selectedModelId }: { selectedModelId: string }) {
       />
       
       <div className="order-3 md:order-3 ml-auto">
-        <ConnectButton 
+        {/* <ConnectButton 
           chainStatus="icon"
           showBalance={true}
           accountStatus={{
             smallScreen: 'avatar',
             largeScreen: 'full',
           }}
-        />
+        /> */}
       </div>
     </header>
   );

@@ -26,7 +26,7 @@ export function Chat({
   initialMessages: Array<Message>;
   selectedModelId: string;
 }) {
-  const { address } = useAccount();
+  // const { address } = useAccount();
   
   const { mutate } = useSWRConfig();
 
@@ -41,7 +41,7 @@ export function Chat({
     stop,
     data: streamingData,
   } = useChat({
-    body: { id, modelId: selectedModelId, address },
+    body: { id, modelId: selectedModelId },
     initialMessages,
     onFinish: () => {
       mutate('/api/history');
