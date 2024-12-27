@@ -18,15 +18,16 @@ export const {
 } = NextAuth({
   ...authConfig,
   providers: [
+    
     Credentials({
+      name: 'privy',
       credentials: {},
-      async authorize({ email, password }: any) {
-        const users = await getUser(email);
-        if (users.length === 0) return null;
-        // biome-ignore lint: Forbidden non-null assertion.
-        const passwordsMatch = await compare(password, users[0].password!);
-        if (!passwordsMatch) return null;
-        return users[0] as any;
+      async authorize({ request }: any) {
+        console.log('authorize', request);
+        // const session = await getSession(request);
+        // if (!session) return null;
+        // return session.user as any;
+        return null;
       },
     }),
   ],

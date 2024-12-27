@@ -41,6 +41,22 @@ export const login = async (
   }
 };
 
+export const loginPrivy = async (
+  // _: LoginActionState,
+): Promise<LoginActionState> => {
+  try {
+    await signIn('privy');
+
+    return { status: 'success' };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return { status: 'invalid_data' };
+    }
+
+    return { status: 'failed' };
+  }
+};
+
 export interface RegisterActionState {
   status:
     | 'idle'
